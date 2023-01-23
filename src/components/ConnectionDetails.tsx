@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
+
+import { Input } from "./UI/Input";
+import { Card } from "@/components/UI/Card";
+
 import {
   Connection as IConnection,
   connectionData as IConnectionData,
 } from "@/types/connection.interface";
-import { fetchConnectionData } from "@/API/mockAPI";
 
-import { Card } from "@/components/UI/Card";
+import { fetchConnectionData, searchConnectionData } from "@/API/mockAPI";
+
+import useDebounce from "@/hooks/useDebounce";
 
 interface Props {
   connections: IConnection[];
@@ -15,10 +20,11 @@ interface Props {
 
 export const ConnectionDetails = ({ selectedConnection }: Props) => {
   const [connectionData, setConnectionData] = useState<IConnectionData[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearch = useDebounce(searchQuery, 500);
 
   // Using mocK API to simulate the data coming from connections
   // In a real project, the data would be based on userID
-
   useEffect(() => {
     const fetchedConnectionData = async () => {
       const data: IConnectionData[] = await fetchConnectionData();
@@ -27,38 +33,34 @@ export const ConnectionDetails = ({ selectedConnection }: Props) => {
     fetchedConnectionData();
   }, []);
 
-  const handleAddAsProfilePicture = () => {
-    // Add selected connection as profile picture
-    console.log(`${selectedConnection.name} added as profile picture.`);
-  };
-
-  const handleShareWithCommunity = () => {
-    // Share selected connection with community
-    console.log(`${selectedConnection.name} shared with community.`);
-  };
-
-  const handleCreatePoll = () => {
-    // Create poll
-    console.log(`Poll created using ${selectedConnection.name}`);
-  };
+  useEffect(() => {
+    if (debouncedSearch) {
+      const fetchedConnectionData = async () => {
+        const data: IConnectionData[] = await searchConnectionData(searchQuery);
+        setConnectionData(data);
+      };
+      fetchedConnectionData();
+    }
+  }, [debouncedSearch, searchQuery]);
 
   return (
-    <div className="flex flex-wrap justify-start gap-16 py-10">
-      {connectionData.length &&
-        connectionData.map((item) => {
-          return <Card key={item.id} connectionData={item} />;
-        })}
-    </div>
-    // <div>
-    //   <button type="button" onClick={handleAddAsProfilePicture}>
-    //     Add as Profile Picture
-    //   </button>
-    //   <button type="button" onClick={handleShareWithCommunity}>
-    //     Share with Community
-    //   </button>
-    //   <button type="button" onClick={handleCreatePoll}>
-    //     Create Poll
-    //   </button>
-    // </div>
+    <>
+      <Input
+        placeholder="Search"
+        type="text"
+        label="Search:"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e)}
+      />
+      <div className="flex flex-wrap justify-start gap-16 py-10">
+        {!!connectionData && connectionData.length ? (
+          connectionData.map((item) => {
+            return <Card key={item.id} connectionData={item} />;
+          })
+        ) : (
+          <p className="center"> Not Found </p>
+        )}
+      </div>
+    </>
   );
 };

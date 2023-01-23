@@ -25,8 +25,12 @@ export const Connection = ({
 
   const editConnection = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEdit({ id: connection.id, name, username, platform });
-    setIsEditing(false);
+    if (!name.trim() || !username.trim() || !platform.trim()) {
+      alert("Please fill out the form");
+    } else {
+      onEdit({ id: connection.id, name, username, platform });
+      setIsEditing(false);
+    }
   };
 
   const handlerShowConnectionDetails = () =>
@@ -73,7 +77,7 @@ export const Connection = ({
   return (
     <>
       <div
-        onClick={() => handlerShowConnectionDetails()}
+        onClick={handlerShowConnectionDetails}
         className="flex justify-between bg-slate-100 rounded-xl p-3 dark:bg-slate-800 mb-5 cursor-pointer"
       >
         <div>

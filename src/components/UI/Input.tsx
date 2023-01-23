@@ -8,6 +8,7 @@ interface Props {
   onChange: (value: string) => void;
   type?: string;
   className?: string;
+  placeholder?: string;
 }
 
 export const Input = ({
@@ -16,11 +17,13 @@ export const Input = ({
   onChange,
   type = "text",
   className,
+  placeholder,
 }: Props) => {
   return (
     <label className={`block font-medium text-lg mb-2 ${className}`}>
       {label}
       <input
+        placeholder={placeholder}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}

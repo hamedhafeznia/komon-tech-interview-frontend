@@ -58,3 +58,13 @@ export const fetchConnectionData = async () => {
     console.error(err);
   }
 };
+
+export const searchConnectionData = async (query: string) => {
+  try {
+    const response = await fetch(`${baseURL}/posts/search?q=${query}&limit=10`);
+    const data = await response.json();
+    return data.posts;
+  } catch (err) {
+    console.error(err);
+  }
+};

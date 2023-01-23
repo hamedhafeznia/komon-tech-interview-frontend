@@ -14,7 +14,9 @@ export const ConnectionsList = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <h2 className="text-xl my-10">Connections</h2>
+      {!!connections.length && (
+        <h2 className="text-xl mt-20 mb-5">Connections</h2>
+      )}
       {connections.map((connection) => (
         <Connection
           key={connection.id}
