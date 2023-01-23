@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "./UI/Input";
-import { Button } from "./UI/Button";
+import { Input } from "../UI/Input";
+import { Button } from "../UI/Button";
 
 interface Props {
   onAddConnection: (connection: {

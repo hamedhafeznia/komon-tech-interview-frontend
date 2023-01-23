@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Input } from "./UI/Input";
+import { Input } from "../UI/Input";
 import { Card } from "@/components/UI/Card";
 
 import {
@@ -12,13 +12,7 @@ import { fetchConnectionData, searchConnectionData } from "@/API/mockAPI";
 
 import useDebounce from "@/hooks/useDebounce";
 
-interface Props {
-  connections: IConnection[];
-  selectedConnection: IConnection | null;
-  setSelectedConnection: (connection: IConnection | null) => void;
-}
-
-export const ConnectionDetails = ({ selectedConnection }: Props) => {
+export const ConnectionDetails = () => {
   const [connectionData, setConnectionData] = useState<IConnectionData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearch = useDebounce(searchQuery, 500);
