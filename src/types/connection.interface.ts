@@ -4,3 +4,12 @@ export interface Connection {
   username: string;
   platform: string;
 }
+
+export interface connectionData {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
+  tags: string[];
+  reactions: number;
+}

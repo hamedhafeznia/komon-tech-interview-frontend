@@ -33,7 +33,7 @@ export const AddConnectionForm: React.FC<Props> = ({ onAddConnection }) => {
 
   return (
     <>
-      <h2 className="my-10">Create New Connections</h2>
+      <h2 className="mb-5 mt-10">Create New Connections</h2>
       <form onSubmit={handleSubmit} className="bg-white rounded-lg">
         <Input
           type="text"

@@ -55,7 +55,6 @@ const Dashboard = () => {
         onEditConnection={handleEditConnection}
         onDeleteConnection={handleDeleteConnection}
       />
-      <ConnectionDetails connections={connections} />
     </div>
   );
 };

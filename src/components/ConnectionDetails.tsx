@@ -1,5 +1,11 @@
-import React from "react";
-import { Connection as IConnection } from "@/types/connection.interface";
+import React, { useEffect, useState } from "react";
+import {
+  Connection as IConnection,
+  connectionData as IConnectionData,
+} from "@/types/connection.interface";
+import { fetchConnectionData } from "@/API/mockAPI";
+
+import { Card } from "@/components/UI/Card";
 
 interface Props {
   connections: IConnection[];
@@ -7,19 +13,19 @@ interface Props {
   setSelectedConnection: (connection: IConnection | null) => void;
 }
 
-export const ConnectionDetails = ({
-  connections,
-  selectedConnection,
-  setSelectedConnection,
-}: Props) => {
-  if (!selectedConnection) {
-    return (
-      <div>
-        <h2>Connection Details</h2>
-        <p>No connection selected.</p>
-      </div>
-    );
-  }
+export const ConnectionDetails = ({ selectedConnection }: Props) => {
+  const [connectionData, setConnectionData] = useState<IConnectionData[]>([]);
+
+  // Using mocK API to simulate the data coming from connections
+  // In a real project, the data would be based on userID
+
+  useEffect(() => {
+    const fetchedConnectionData = async () => {
+      const data: IConnectionData[] = await fetchConnectionData();
+      setConnectionData(data);
+    };
+    fetchedConnectionData();
+  }, []);
 
   const handleAddAsProfilePicture = () => {
     // Add selected connection as profile picture
@@ -37,33 +43,22 @@ export const ConnectionDetails = ({
   };
 
   return (
-    <div>
-      <h2>Connection Details</h2>
-      <h3>{selectedConnection.name}</h3>
-      <p>Username: {selectedConnection.username}</p>
-      <p>Platform: {selectedConnection.platform}</p>
-      <button type="button" onClick={handleAddAsProfilePicture}>
-        Add as Profile Picture
-      </button>
-      <button type="button" onClick={handleShareWithCommunity}>
-        Share with Community
-      </button>
-      <button type="button" onClick={handleCreatePoll}>
-        Create Poll
-      </button>
-      <select
-        onChange={(e) =>
-          setSelectedConnection(
-            connections.find((c) => c.id === parseInt(e.target.value))
-          )
-        }
-      >
-        {connections.map((connection) => (
-          <option key={connection.id} value={connection.id}>
-            {connection.name}
-          </option>
-        ))}
-      </select>
+    <div className="flex flex-wrap justify-start gap-16 py-10">
+      {connectionData.length &&
+        connectionData.map((item) => {
+          return <Card key={item.id} connectionData={item} />;
+        })}
     </div>
+    // <div>
+    //   <button type="button" onClick={handleAddAsProfilePicture}>
+    //     Add as Profile Picture
+    //   </button>
+    //   <button type="button" onClick={handleShareWithCommunity}>
+    //     Share with Community
+    //   </button>
+    //   <button type="button" onClick={handleCreatePoll}>
+    //     Create Poll
+    //   </button>
+    // </div>
   );
 };

@@ -1,5 +1,7 @@
 import { Connection as IConnection } from "@/types/connection.interface";
 
+const baseURL = "https://dummyjson.com";
+
 let mockData: { data: IConnection[] } = {
   data: JSON.parse(localStorage.getItem("mockDataStorage")),
 };
@@ -45,4 +47,14 @@ export const mockApi = {
     localStorage.setItem("mockDataStorage", JSON.stringify(mockData.data));
     return {};
   },
+};
+
+export const fetchConnectionData = async () => {
+  try {
+    const response = await fetch(`${baseURL}/posts?limit=10&skip=10&userId`);
+    const data = await response.json();
+    return data.posts;
+  } catch (err) {
+    console.error(err);
+  }
 };
