@@ -3,14 +3,19 @@ import { Connection as IConnection } from "@/types/connection.interface";
 const baseURL = "https://dummyjson.com";
 
 let mockData: { data: IConnection[] } = {
-  data: JSON.parse(localStorage.getItem("mockDataStorage")),
+  data: [],
 };
+
+const mockDataFromStorage = localStorage.getItem("mockDataStorage");
+if (mockDataFromStorage) {
+  mockData.data = JSON.parse(mockDataFromStorage);
+}
 
 if (typeof localStorage === "undefined" || mockData.data === null) {
   mockData = {
     data: [
       {
-        id: "1",
+        id: 1,
         name: "Example Connection",
         username: "exampleuser",
         platform: "Instagram",
@@ -33,6 +38,7 @@ export const mockApi = {
     localStorage.setItem("mockDataStorage", JSON.stringify(mockData.data));
     return newData;
   },
+
   async put(url: string, data: IConnection) {
     // Return a mocked response for the PUT request
     const index = mockData.data.findIndex((val) => val.id === data.id);
@@ -40,7 +46,8 @@ export const mockApi = {
     localStorage.setItem("mockDataStorage", JSON.stringify(mockData.data));
     return { data };
   },
-  async delete(url: string, id: string) {
+
+  async delete(url: string, id: number) {
     // Return a mocked response for the DELETE request
     mockData.data = mockData.data.filter((val) => val.id !== id);
     console.log(mockData.data, id);

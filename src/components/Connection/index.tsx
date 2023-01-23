@@ -8,7 +8,7 @@ import { Connection as IConnection } from "@/types/connection.interface";
 interface ConnectionProps {
   connection: IConnection;
   onEdit: (connection: IConnection) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: number) => void;
 }
 
 export const Connection = ({
@@ -18,10 +18,11 @@ export const Connection = ({
 }: ConnectionProps) => {
   // State for editing the connection
   const [isEditing, setIsEditing] = useState(false);
-  const [showConnectionDetail, setShowConnectionDetail] = useState(false);
   const [name, setName] = useState(connection.name);
   const [username, setUsername] = useState(connection.username);
   const [platform, setPlatform] = useState(connection.platform);
+
+  const [showConnectionDetail, setShowConnectionDetail] = useState(false);
 
   const editConnection = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +39,10 @@ export const Connection = ({
 
   if (isEditing) {
     return (
-      <form className="flex justify-between bg-slate-100 rounded-xl p-3 dark:bg-slate-800 mb-5">
+      <form
+        onSubmit={editConnection}
+        className="flex flex-row  justify-between bg-slate-100 rounded-xl p-3 dark:bg-slate-800 mb-5"
+      >
         <Input
           type="text"
           label="Name:"
@@ -58,16 +62,16 @@ export const Connection = ({
           onChange={(e) => setPlatform(e)}
         />
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-6">
           <Button
             label="Save"
-            onClick={(e) => editConnection(e)}
             className="bg-green-500 text-white hover:bg-green-600"
+            onClick={() => editConnection}
           />
           <Button
             label="Cancel"
             onClick={() => setIsEditing(false)}
-            className="bg-red-500 text-white hover:bg-red-600 ml-4"
+            className="bg-red-500 text-white hover:bg-red-600 ml-2"
           />
         </div>
       </form>
@@ -99,7 +103,7 @@ export const Connection = ({
           />
           <Button
             label="Delete"
-            onClick={() => onDelete(connection.id)}
+            onClick={() => onDelete(connection.id as number)}
             className="bg-red-500 text-white hover:bg-red-600 ml-5"
           />
         </div>

@@ -1,5 +1,5 @@
 export interface Connection {
-  id: string;
+  id?: number;
   name: string;
   username: string;
   platform: string;

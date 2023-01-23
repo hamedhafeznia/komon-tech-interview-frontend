@@ -12,12 +12,16 @@ export const ConnectionsList = ({
   onEditConnection: any;
   onDeleteConnection: any;
 }) => {
+  const filtredConnections = connections.filter(function (item, pos) {
+    return connections.indexOf(item) == pos;
+  });
+
   return (
     <div className="flex flex-col">
       {!!connections.length && (
         <h2 className="text-xl mt-20 mb-5">Connections</h2>
       )}
-      {connections.map((connection) => (
+      {filtredConnections.map((connection) => (
         <Connection
           key={connection.id}
           connection={connection}

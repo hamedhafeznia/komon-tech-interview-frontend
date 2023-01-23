@@ -2,24 +2,19 @@
 import React, { useState, useEffect } from "react";
 import { AddConnectionForm } from "@/components/AddConnectionForm";
 import { ConnectionsList } from "@/components/ConnectionsList";
-import { ConnectionDetails } from "@/components/ConnectionDetails";
 
 import { Connection as IConnection } from "@/types/connection.interface";
-
 import { mockApi } from "@/API/mockAPI";
 
 const Dashboard = () => {
-  // State to store the social media connections
   const [connections, setConnections] = useState<IConnection[]>([]);
-
-  const fetchConnections = async () => {
-    const response = await mockApi.get("/connections");
-    setConnections(response.data);
-  };
 
   const handleAddConnection = async (newConnection: IConnection) => {
     const response = await mockApi.post("/connections", newConnection);
-    setConnections([...connections, response.data]);
+    if (!!response.data) {
+      setConnections([...connections, response.data]);
+      console.log(connections);
+    }
   };
 
   const handleEditConnection = async (updatedConnection: IConnection) => {
@@ -36,7 +31,7 @@ const Dashboard = () => {
     setConnections(updatedConnections);
   };
 
-  const handleDeleteConnection = async (id: string) => {
+  const handleDeleteConnection = async (id: number) => {
     await mockApi.delete(`/connections/${id}`, id);
     setConnections(
       connections.filter((connection: IConnection) => connection.id !== id)
@@ -44,18 +39,22 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    const fetchConnections = async () => {
+      const response = await mockApi.get("/connections");
+      setConnections(response.data);
+    };
     fetchConnections();
   }, []);
 
   return (
-    <div>
+    <>
       <AddConnectionForm onAddConnection={handleAddConnection} />
       <ConnectionsList
         connections={connections}
         onEditConnection={handleEditConnection}
         onDeleteConnection={handleDeleteConnection}
       />
-    </div>
+    </>
   );
 };
 

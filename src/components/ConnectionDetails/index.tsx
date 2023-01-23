@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../UI/Input";
 import { Card } from "@/components/UI/Card";
 
-import {
-  Connection as IConnection,
-  connectionData as IConnectionData,
-} from "@/types/connection.interface";
+import { connectionData as IConnectionData } from "@/types/connection.interface";
 
 import { fetchConnectionData, searchConnectionData } from "@/API/mockAPI";
 
@@ -46,7 +43,7 @@ export const ConnectionDetails = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e)}
       />
-      <div className="flex flex-wrap justify-start gap-16 py-10">
+      <div className="flex flex-wrap justify-start gap-5 py-10">
         {!!connectionData && connectionData.length ? (
           connectionData.map((item) => {
             return <Card key={item.id} connectionData={item} />;
